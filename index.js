@@ -28,7 +28,7 @@ app.get('/sinesp/token/new', async (req, res) => {
 
 app.get('/sinesp/token/all', async (req, res) => {
     res.send({
-        tokens: Subscriber.tokens
+        tokens: Subscriber.getAllFcmToken
     })
 });
 

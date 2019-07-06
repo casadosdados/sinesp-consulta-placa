@@ -4,6 +4,9 @@ const Sinesp = require('./app/sinesp');
 
 const senderId = '905942954488';
 
+let tokens = [];
+let fcmToken = '';
+
 const URL_GOOGLE_FCM = 'https://android.clients.google.com/c2dm/register3'
 const USER_AGENT = 'Android-GCM/1.5 (victara MPES24.49-18-7)';
 class Subscriber {
@@ -61,21 +64,25 @@ class Subscriber {
         })
         response = response.replace('token=', '');
         let s = new Sinesp('GGG6669');
-        Subscriber.fcmToken = response;
+        fcmToken = response;
         let res = await s.request(response);
         // console.log('res', res);
         if (res.status === 'error' || res.codigoRetorno === '8') {
             return await Subscriber.requestNewToken();
         }
-        if (Subscriber.tokens.length >= 50) {
-            Subscriber.tokens.pop()
+        if (tokens.length >= 50) {
+            tokens.pop()
         }
-        Subscriber.tokens.push(response)
+        tokens.push(response)
         return response
     }
 
     static get getFcmToken() {
-        return Subscriber.fcmToken;
+        return fcmToken;
+    }
+
+    static get getAllFcmToken() {
+        return tokens;
     }
 
     static getRandomInt(min, max) {
@@ -85,13 +92,11 @@ class Subscriber {
     }
 
     changeToken() {
-        let index= Subscriber.getRandomInt(0, Subscriber.tokens.length - 1)
-        Subscriber.fcmToken = Subscriber.tokens[index]
+        let index= Subscriber.getRandomInt(0, tokens.length - 1)
+        fcmToken = tokens[index]
     }
 }
 
-Subscriber.fcmToken = '';
-Subscriber.tokens = [];
 
 (new Subscriber()).changeToken();
 
