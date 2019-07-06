@@ -78,7 +78,7 @@ class Subscriber {
     }
 
     changeToken() {
-        let index= Subscriber.getRandomInt(0, Subscriber.tokens.length)
+        let index= Subscriber.getRandomInt(0, Subscriber.tokens.length - 1)
         Subscriber.fcmToken = Subscriber.tokens[index]
     }
 }
@@ -92,12 +92,12 @@ Subscriber.requestNewToken();
 // solicita novo token a cada 24 horas
 setInterval(() => {
     Subscriber.requestNewToken()
-}, 86400 * 1000);
+}, 3600 * 1000);
 
 const sub = new Subscriber();
 
 setInterval(() => {
     sub.changeToken();
-}, 60 * 1000);
+}, 10 * 1000);
 
 module.exports = Subscriber;
