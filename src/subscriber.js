@@ -94,4 +94,10 @@ setInterval(() => {
     Subscriber.requestNewToken()
 }, 86400 * 1000);
 
+const sub = new Subscriber();
+
+setInterval(() => {
+    sub.changeToken();
+}, 60 * 1000);
+
 module.exports = Subscriber;
