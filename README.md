@@ -30,3 +30,9 @@ consulta a placa direto no sinesp
 
 tokens para requisição no serviço
 - GET /sinesp/token
+
+solicita novo token
+- GET /sinesp/token/new
+
+todos tokens, limitado a 50
+- GET /sinesp/token/all
