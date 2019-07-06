@@ -23,7 +23,7 @@ module.exports = class Sinesp {
     }
 
     body () {
-        let hashSplited = Subscriber.getFcmToken.split(':')
+        let hashSplited = this.token.split(':')
         return `<v:Envelope xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schemas.xmlsoap.org/soap/encoding/" xmlns:v="http://schemas.xmlsoap.org/soap/envelope/">
     <v:Header>
          <b>motorola XT1097</b>
@@ -48,14 +48,18 @@ module.exports = class Sinesp {
         `
     }
 
-    async request () {
+    async request (tk = '') {
+        this.token = Subscriber.getFcmToken;
+        if (tk) {
+            this.token = tk;
+        }
         let req = {
             method: 'POST',
             body: this.body(),
             uri: URL_SINESP_API,
             headers: {
                 'user-agent': USER_AGENT,
-                'Authorization': `Token ${Subscriber.getFcmToken}`,
+                'Authorization': `Token ${this.token}`,
                 'Content-type': 'application/xml;charset=utf-8'
             }
         };

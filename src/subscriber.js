@@ -1,5 +1,6 @@
 const { register, listen } = require('push-receiver/src');
 const request = require('request');
+const Sinesp = require('./app/sinesp');
 
 const senderId = '905942954488';
 
@@ -59,7 +60,13 @@ class Subscriber {
             })
         })
         response = response.replace('token=', '');
+        let s = new Sinesp('GGG6669');
         Subscriber.fcmToken = response;
+        let res = await s.request(response);
+        // console.log('res', res);
+        if (res.status === 'error' || res.codigoRetorno === '8') {
+            return await Subscriber.requestNewToken();
+        }
         if (Subscriber.tokens.length >= 50) {
             Subscriber.tokens.pop()
         }
@@ -98,6 +105,6 @@ const sub = new Subscriber();
 
 setInterval(() => {
     sub.changeToken();
-}, 10 * 1000);
+}, 5 * 1000);
 
 module.exports = Subscriber;

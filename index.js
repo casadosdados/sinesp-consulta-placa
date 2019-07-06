@@ -43,7 +43,7 @@ app.get('/sinesp/placa/:placa', async (req, res, next) => {
     try {
         placa = placa.replace('-', '');
         let sinespAPi = new Sinesp(placa)
-        response = await sinespAPi.request()
+        response = await sinespAPi.request(Subscriber.getFcmToken)
         res.send(response)
     } catch (e) {
         console.log(e)
