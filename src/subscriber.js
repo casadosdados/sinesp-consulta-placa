@@ -9,23 +9,23 @@ class Subscriber {
     constructor () {
     }
 
-    async requestNewToken () {
-        try {
-            const credentials = await register(senderId);
-            Subscriber.fcmToken = credentials.fcm.token;
-            console.log('Use this following token to send a notification', Subscriber.fcmToken);
-            this.subscribe(credentials)
-            return Subscriber.fcmToken;
-        } catch (e) {
-            console.log('erro na solicitação, tentando novamente', e)
-            this.requestNewToken()
-        }
-    }
-
-    subscribe (credentials) {
-        const persistentIds = [] // get all previous persistentIds from somewhere (file, db, etc...)
-        listen({ ...credentials, persistentIds}, () => {});
-    }
+    // async requestNewToken () {
+    //     try {
+    //         const credentials = await register(senderId);
+    //         Subscriber.fcmToken = credentials.fcm.token;
+    //         console.log('Use this following token to send a notification', Subscriber.fcmToken);
+    //         this.subscribe(credentials)
+    //         return Subscriber.fcmToken;
+    //     } catch (e) {
+    //         console.log('erro na solicitação, tentando novamente', e)
+    //         this.requestNewToken()
+    //     }
+    // }
+    //
+    // subscribe (credentials) {
+    //     const persistentIds = [] // get all previous persistentIds from somewhere (file, db, etc...)
+    //     listen({ ...credentials, persistentIds}, () => {});
+    // }
 
     static randomString(length) {
         let result           = '';
@@ -60,7 +60,11 @@ class Subscriber {
         })
         response = response.replace('token=', '');
         Subscriber.fcmToken = response;
+        if (Subscriber.tokens.length >= 50) {
+            Subscriber.tokens.pop()
+        }
         Subscriber.tokens.push(response)
+        return response
     }
 
     static get getFcmToken() {
@@ -81,7 +85,13 @@ class Subscriber {
 
 Subscriber.fcmToken = '';
 Subscriber.tokens = [];
-Subscriber.tokens.push('hJ89NHZDaFM:APA91bEMD8tQj7fBsc2OS5Lyx3jW7U4vZcTsOabK2tvbqLWkmWFoZe05sA1sEyRartHvfHuUxpJHohhNER9CCOHvKn7CwUgyd0e5EfBQhxtveUzPOoniWcM3e6JS9nGmPvv4Sc6Y1Gww');
+
 (new Subscriber()).changeToken();
+
+Subscriber.requestNewToken();
+// solicita novo token a cada 24 horas
+setInterval(() => {
+    Subscriber.requestNewToken()
+}, 86400 * 1000);
 
 module.exports = Subscriber;

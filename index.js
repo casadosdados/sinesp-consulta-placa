@@ -3,7 +3,6 @@ let Sinesp = require('./src/app/sinesp');
 let express = require('express');
 let cors = require('cors');
 
-Subscriber.requestNewToken();
 let s = new Subscriber();
 // s.requestNewToken()
 
@@ -17,6 +16,20 @@ app.get('/sinesp/token', function (req, res) {
     res.send({
         token: Subscriber.getFcmToken
     });
+});
+
+app.get('/sinesp/token/new', async (req, res) => {
+    let token = await Subscriber.requestNewToken()
+    res.send({
+        token
+    })
+});
+
+
+app.get('/sinesp/token/all', async (req, res) => {
+    res.send({
+        tokens: Subscriber.tokens
+    })
 });
 
 app.get('/sinesp/placa/:placa', async (req, res, next) => {
