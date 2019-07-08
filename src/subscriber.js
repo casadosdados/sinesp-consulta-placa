@@ -66,12 +66,11 @@ class Subscriber {
         let s = new Sinesp('GGG6669');
         fcmToken = response;
         let res = await s.request(response);
-        // console.log('res', res);
         if (res.status === 'error' || res.codigoRetorno === '8') {
             return await Subscriber.requestNewToken();
         }
         if (tokens.length >= 50) {
-            tokens.pop()
+            tokens.shift();
         }
         tokens.push(response)
         return response
@@ -104,12 +103,12 @@ Subscriber.requestNewToken();
 // solicita novo token a cada 24 horas
 setInterval(() => {
     Subscriber.requestNewToken()
-}, 3600 * 1000);
+}, 1800 * 1000);
 
 const sub = new Subscriber();
 
 setInterval(() => {
     sub.changeToken();
-}, 5 * 1000);
+}, 60 * 1000);
 
 module.exports = Subscriber;
