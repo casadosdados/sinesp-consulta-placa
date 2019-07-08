@@ -3,7 +3,7 @@ let Sinesp = require('./src/app/sinesp');
 let express = require('express');
 let cors = require('cors');
 
-let s = new Subscriber();
+// let s = new Subscriber();
 // s.requestNewToken()
 
 let app = express();
