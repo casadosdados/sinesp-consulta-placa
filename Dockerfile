@@ -2,6 +2,7 @@ FROM node:10-alpine
 
 LABEL maintainer="contato@casadosdados.com.br"
 
+RUN apk add --no-cache git
 WORKDIR /sinesp
 ENV NODE_ENV production
 COPY package.json .
