@@ -10,6 +10,7 @@ docker run --name sinesp-consulta-placa -p 3000:3000 -d casadosdados/sinesp-cons
 - Requisitos para executar
 * node >= 10
 * npm
+* git
  
 ```bash
 git clone https://github.com/casadosdados/sinesp-consulta-placa.git
