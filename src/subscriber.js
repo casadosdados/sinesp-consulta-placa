@@ -20,9 +20,11 @@ class Subscriber {
     static async newTokenGoogle() {
         try {
             const credentials = await register(appInfo);
-            Subscriber.fcmToken = credentials.fcm.token;
+            Subscriber.fcmToken = credentials.gcm.token;
+            // console.log(credentials)
             console.log('Use this following token to send a notification', Subscriber.fcmToken);
-            // this.subscribe(credentials)
+            // Subscriber.subscribe(credentials)
+            // await Subscriber.sleep(5000);
             return Subscriber.fcmToken;
         } catch (e) {
             console.log('erro na solicitação, tentando novamente', e)
@@ -30,10 +32,16 @@ class Subscriber {
         }
     }
 
-    // subscribe (credentials) {
-    //     const persistentIds = [] // get all previous persistentIds from somewhere (file, db, etc...)
-    //     listen({ ...credentials, persistentIds}, () => {});
-    // }
+    static async sleep (ms){
+        return new Promise(resolve=>{
+            setTimeout(resolve,ms)
+        })
+    }
+
+    static subscribe (credentials) {
+        const persistentIds = [] // get all previous persistentIds from somewhere (file, db, etc...)
+        listen({ ...credentials, persistentIds}, () => {});
+    }
 
     static async requestNewToken() {
         let response = await Subscriber.newTokenGoogle()
